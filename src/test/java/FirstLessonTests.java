@@ -1,30 +1,29 @@
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.HasCapabilities;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.edge.EdgeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
 
 public class FirstLessonTests {
-    private static WebDriver driver;
+    private WebDriver driver;
 
-    @BeforeAll
-    public static void setUp() {
-        driver = new ChromeDriver();
-        DesiredCapabilities caps = new DesiredCapabilities();
-        System.out.println(((HasCapabilities)driver).getCapabilities());
-    }
 
     @Test
     public void start() {
-        //driver.get("http://localhost/litecart/admin/");
-        System.out.println("!!!");
-    }
-
-    @AfterAll
-    public static void tearDown() {
+        driver = new ChromeDriver();
+        driver.get("http://localhost/litecart/admin/");
+        driver.quit();
+        driver = new FirefoxDriver();
+        driver.get("http://localhost/litecart/admin/");
+        driver.quit();
+        driver = new EdgeDriver();
+        driver.get("http://localhost/litecart/admin/");
         driver.quit();
     }
     
 }
+
+
