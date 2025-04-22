@@ -22,8 +22,9 @@ public class LessonFourTask7Tests {
 
     @Test
     public void checkStickers() {
-        List<WebElement> cards = driver.findElements(By.className("li.product.column.shadow.hover-light"));
+        List<WebElement> cards = driver.findElements(By.className("product"));
         int count = 0;
+        System.out.println(cards.size());
         for(WebElement card : cards) {
             Assertions.assertTrue(check(card));
             count++;
@@ -33,7 +34,7 @@ public class LessonFourTask7Tests {
     }
 
     public boolean check(WebElement elem) {
-        return elem.findElements(By.cssSelector("[class^=sticker]")).size() == 1;
+        return elem.findElements(By.className("sticker")).size() == 1;
     }
 
 
