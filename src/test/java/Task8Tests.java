@@ -51,9 +51,10 @@ public class Task8Tests {
     }
 
     public List<String> getZones() {
-        List<String> zones = driver.findElements(By.cssSelector("[name*='[name]'][type='hidden']"))
+        List<String> zones = driver.findElements(By.cssSelector("#table-zones td:nth-child(3)"))
                 .stream()
-                .map(elem -> elem.getAttribute("value"))
+                .map(WebElement::getText)
+                .filter(str -> !str.isEmpty())
                 .toList();
         return zones;
     }
