@@ -16,7 +16,7 @@ public class Task9Tests extends BaseTests{
 
     @Test
     public void orderGeoZonesTest() {
-        init("http://localhost/litecart/admin/?app=geo_zones&doc=geo_zones");
+        init("http://localhost/litecart/admin/?app=geo_zones&doc=geo_zones", "chrome");
         login();
         Wait<WebDriver> wait = new WebDriverWait(driver, Duration.ofMillis(3000));
         wait.until(presenceOfElementLocated(By.className("row")));
