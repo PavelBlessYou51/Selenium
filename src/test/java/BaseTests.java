@@ -9,6 +9,7 @@ import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.io.File;
 import java.time.Duration;
 
 public class BaseTests {
@@ -20,7 +21,7 @@ public class BaseTests {
             case "firefox" -> driver = new FirefoxDriver();
             case "edge" -> driver = new EdgeDriver();
         }
-        driver.manage().window().maximize();
+//        driver.manage().window().maximize();
         driver.get(url);
     }
 
@@ -42,6 +43,12 @@ public class BaseTests {
     public void click(By locator) {
         WebElement element = new WebDriverWait(driver, Duration.ofSeconds(15)).until(ExpectedConditions.presenceOfElementLocated(locator));
         element.click();
+    }
+
+    public void uploadFile(By locator, String path) {
+        WebElement fileInput = new WebDriverWait(driver, Duration.ofSeconds(15)).until(ExpectedConditions.presenceOfElementLocated(locator));
+        File file = new File("src/test/resources/plant.jpg");
+        fileInput.sendKeys(file.getAbsolutePath());
     }
 
 
