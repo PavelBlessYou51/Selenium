@@ -19,8 +19,10 @@ public class Task12Tests extends BaseTests{
         click(By.xpath("//a[contains(text(), 'Prices')]"));
         fillIPrices();
         click(By.name("save"));
-        String notice = driver.findElement(By.className("notice")).getText();
-        Assertions.assertEquals("Changes saved", notice);
+        String notice = driver.findElement(By.xpath("//div[contains(text(), 'Changes saved successfully.')]")).getText();
+        Assertions.assertEquals("Changes saved successfully.", notice);
+        int addedGoods = driver.findElements(By.xpath("//a[contains(text(), 'Goose1')]")).size();
+        Assertions.assertTrue(addedGoods > 0);
         quit();
     }
 
