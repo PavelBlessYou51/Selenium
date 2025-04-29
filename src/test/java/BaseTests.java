@@ -21,7 +21,7 @@ public class BaseTests {
             case "firefox" -> driver = new FirefoxDriver();
             case "edge" -> driver = new EdgeDriver();
         }
-//        driver.manage().window().maximize();
+        driver.manage().window().maximize();
         driver.get(url);
     }
 
