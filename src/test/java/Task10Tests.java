@@ -34,7 +34,7 @@ public class Task10Tests extends BaseTests{
                 .getText()
                 .substring(1);
         Assertions.assertTrue(Integer.parseInt(usualOuterPrice) > Integer.parseInt(discountOuterPrice)); // проверяем, что акционная цена меньше
-        Assertions.assertTrue(Integer.parseInt(usualPriceElem.getCssValue("font-weight")) < Integer.parseInt(discountPriceElem.getCssValue("font-weight"))); // проверяем, что акционная цена крупнее
+        Assertions.assertTrue(0 > usualPriceElem.getCssValue("font-size").compareTo(discountPriceElem.getCssValue("font-size"))); // проверяем, что акционная цена крупнее
         driver.findElement(By.cssSelector("#box-campaigns a")).click();
         // проверяем внутренние элементы
         String innerTitle = driver.findElement(By.cssSelector("h1")).getText();
@@ -59,7 +59,7 @@ public class Task10Tests extends BaseTests{
                 .getText()
                 .substring(1);
         Assertions.assertTrue(Integer.parseInt(usualInnerPrice) > Integer.parseInt(discountInnerPrice)); // проверяем, что акционная цена меньше
-        Assertions.assertTrue(Integer.parseInt(usualPriceInnerElem.getCssValue("font-weight")) < Integer.parseInt(discountPriceInnerElem.getCssValue("font-weight"))); // проверяем, что акционная цена крупнее
+        Assertions.assertTrue(0 > usualPriceInnerElem.getCssValue("font-size").compareTo(discountPriceInnerElem.getCssValue("font-size"))); // проверяем, что акционная цена крупнее
         quit();
     }
 }

@@ -9,8 +9,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 
-import static org.openqa.selenium.support.ui.ExpectedConditions.invisibilityOfElementLocated;
-
 public class Task13Tests extends BaseTests{
     private static int count;
 
@@ -32,7 +30,7 @@ public class Task13Tests extends BaseTests{
         }
         click(By.xpath("//a[contains(text(), 'Checkout')]")); // переходим в корзину
         // удаляем уток
-        while(!driver.findElements(By.name("remove_cart_item")).isEmpty()) {
+        while(!driver.findElements(By.cssSelector("li.item")).isEmpty()) {
             try {
                 WebElement elem = wait.until(ExpectedConditions.presenceOfElementLocated(By.name("remove_cart_item")));
                 wait.until(ExpectedConditions.visibilityOf(elem)).click();
