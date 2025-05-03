@@ -6,6 +6,9 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.Color;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class Task10Tests extends BaseTests{
 
     @ParameterizedTest
@@ -34,7 +37,7 @@ public class Task10Tests extends BaseTests{
                 .getText()
                 .substring(1);
         Assertions.assertTrue(Integer.parseInt(usualOuterPrice) > Integer.parseInt(discountOuterPrice)); // проверяем, что акционная цена меньше
-        Assertions.assertTrue(0 > usualPriceElem.getCssValue("font-size").compareTo(discountPriceElem.getCssValue("font-size"))); // проверяем, что акционная цена крупнее
+        Assertions.assertTrue(getIntSize(usualPriceElem.getCssValue("font-size")) < getIntSize(discountPriceElem.getCssValue("font-size"))); // проверяем, что акционная цена крупнее
         driver.findElement(By.cssSelector("#box-campaigns a")).click();
         // проверяем внутренние элементы
         String innerTitle = driver.findElement(By.cssSelector("h1")).getText();
@@ -59,7 +62,19 @@ public class Task10Tests extends BaseTests{
                 .getText()
                 .substring(1);
         Assertions.assertTrue(Integer.parseInt(usualInnerPrice) > Integer.parseInt(discountInnerPrice)); // проверяем, что акционная цена меньше
-        Assertions.assertTrue(0 > usualPriceInnerElem.getCssValue("font-size").compareTo(discountPriceInnerElem.getCssValue("font-size"))); // проверяем, что акционная цена крупнее
+        Assertions.assertTrue(getIntSize(usualPriceInnerElem.getCssValue("font-size")) < getIntSize(discountPriceInnerElem.getCssValue("font-size"))); // проверяем, что акционная цена крупнее
         quit();
     }
+
+    public static int getIntSize(String text) {
+        Pattern pattern = Pattern.compile("\\d+");
+        Matcher matcher = pattern.matcher(text);
+        int result = 0;
+        if(matcher.find()) {
+            result = Integer.parseInt(matcher.group());
+        }
+        System.out.println(result);
+        return result;
+    }
+
 }

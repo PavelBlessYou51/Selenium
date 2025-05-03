@@ -1,4 +1,5 @@
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.StaleElementReferenceException;
@@ -29,6 +30,7 @@ public class Task13Tests extends BaseTests{
             click(By.cssSelector("[title='Home']"));
         }
         click(By.xpath("//a[contains(text(), 'Checkout')]")); // переходим в корзину
+
         // удаляем уток
         while(!driver.findElements(By.cssSelector("li.item")).isEmpty()) {
             try {
@@ -38,6 +40,7 @@ public class Task13Tests extends BaseTests{
                 continue;
             }
         }
+        wait.until(ExpectedConditions.invisibilityOfElementLocated(By.className("viewport"))); // ожидаем исчезновение контейнера с товарами
         String message = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("em"))).getText();
         Assertions.assertEquals("There are no items in your cart.", message); // проверяем, что все утки удалены
     }
