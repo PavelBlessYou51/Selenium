@@ -12,12 +12,38 @@ import java.time.Duration;
 
 public class Task13Tests extends BaseTests{
     private static int count;
+    private static WebDriverWait waitTime;
 
     @Test
     public void addCartTest(){
         init("http://localhost/litecart/en/", "chrome");
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
-        // набираем уток
+        createWaits();
+        getDucks();
+        goToCart();
+        String message = dleteDucksFromCart();
+        Assertions.assertEquals("There are no items in your cart.", message);
+        quit();
+    }
+
+    private String dleteDucksFromCart() {
+        while(!driver.findElements(By.cssSelector("li.item")).isEmpty()) {
+            try {
+                WebElement elem = waitTime.until(ExpectedConditions.presenceOfElementLocated(By.name("remove_cart_item")));
+                waitTime.until(ExpectedConditions.visibilityOf(elem)).click();
+            } catch (StaleElementReferenceException e) {
+                continue;
+            }
+        }
+        waitTime.until(ExpectedConditions.invisibilityOfElementLocated(By.className("viewport")));
+        String message = waitTime.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("em"))).getText();
+        return message;
+    }
+
+    private void goToCart() {
+        click(By.xpath("//a[contains(text(), 'Checkout')]"));
+    }
+
+    private void getDucks() {
         while(count < 2) {
             count = Integer.parseInt(driver.findElement(By.cssSelector("span.quantity")).getText());
             click(By.cssSelector("#box-most-popular .link"));
@@ -26,22 +52,12 @@ public class Task13Tests extends BaseTests{
                 select.selectByValue("Small");
             }
             click(By.name("add_cart_product"));
-            wait.until(ExpectedConditions.textToBe(By.cssSelector("span.quantity"), String.valueOf(count + 1)));
+            waitTime.until(ExpectedConditions.textToBe(By.cssSelector("span.quantity"), String.valueOf(count + 1)));
             click(By.cssSelector("[title='Home']"));
-        }
-        click(By.xpath("//a[contains(text(), 'Checkout')]")); // переходим в корзину
+        };
+    }
 
-        // удаляем уток
-        while(!driver.findElements(By.cssSelector("li.item")).isEmpty()) {
-            try {
-                WebElement elem = wait.until(ExpectedConditions.presenceOfElementLocated(By.name("remove_cart_item")));
-                wait.until(ExpectedConditions.visibilityOf(elem)).click();
-            } catch (StaleElementReferenceException e) {
-                continue;
-            }
-        }
-        wait.until(ExpectedConditions.invisibilityOfElementLocated(By.className("viewport"))); // ожидаем исчезновение контейнера с товарами
-        String message = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("em"))).getText();
-        Assertions.assertEquals("There are no items in your cart.", message); // проверяем, что все утки удалены
+    private void createWaits() {
+        waitTime = new WebDriverWait(driver, Duration.ofSeconds(15));
     }
 }
