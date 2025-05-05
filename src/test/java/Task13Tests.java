@@ -1,8 +1,8 @@
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.StaleElementReferenceException;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
@@ -20,21 +20,17 @@ public class Task13Tests extends BaseTests{
         createWaits();
         getDucks();
         goToCart();
-        String message = dleteDucksFromCart();
+        String message = deleteDucksFromCart();
         Assertions.assertEquals("There are no items in your cart.", message);
         quit();
     }
 
-    private String dleteDucksFromCart() {
-        while(!driver.findElements(By.cssSelector("li.item")).isEmpty()) {
-            try {
-                WebElement elem = waitTime.until(ExpectedConditions.presenceOfElementLocated(By.name("remove_cart_item")));
-                waitTime.until(ExpectedConditions.visibilityOf(elem)).click();
-            } catch (StaleElementReferenceException e) {
-                continue;
-            }
+    private String deleteDucksFromCart() {
+        int countItems = waitTime.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.className("shortcut"))).size(); // берем количество карточек товаров в корзине (не количество единиц, а именно карточек)
+        for (int i = 0; i < countItems; i++)  { // количство циклов равно колчиеству добавленных карточек
+            waitTime.until(ExpectedConditions.numberOfElementsToBe(By.cssSelector(".dataTable tr"), 5 + countItems - i)); // ждем пока таблица обновится и в ней появится количество строк равное 5(хедер, футер таблицы и 3 пустые строки) + количество карточек товаров. Каждую итерацию уменьшаем на 1 удаленный товар
+            waitTime.until(ExpectedConditions.refreshed(ExpectedConditions.visibilityOfElementLocated(By.name("remove_cart_item")))).click(); // удаляем товар
         }
-        waitTime.until(ExpectedConditions.invisibilityOfElementLocated(By.className("viewport")));
         String message = waitTime.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("em"))).getText();
         return message;
     }
